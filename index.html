@@ -11,26 +11,43 @@
     
     <title>Darts Számláló Pro</title>
     
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="icon.png">
-    <link rel="apple-touch-icon" href="icon.png">
-
+    <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- MOBILE DESIGN SYSTEM --- */
+        :root {
+            /* Fallback értékek, ha a böngésző nem támogatja az env-t */
+            --sat: env(safe-area-inset-top, 20px);
+            --sab: env(safe-area-inset-bottom, 20px);
+            --sal: env(safe-area-inset-left, 0px);
+            --sar: env(safe-area-inset-right, 0px);
+        }
+
         html, body {
             height: 100%;
-            overflow: hidden; /* Megakadályozza a teljes oldal görgetését */
-            overscroll-behavior: none; /* iOS rugózás tiltása */
-            -webkit-tap-highlight-color: transparent; /* Mobilon eltünteti a kék villanást kattintáskor */
+            overflow: hidden;
+            overscroll-behavior: none;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
             font-family: 'Roboto', sans-serif;
             background: radial-gradient(circle at top, #1e1b4b, #0f172a, #000000);
             touch-action: manipulation;
+            /* Modern magasság kezelés mobilra */
+            height: 100vh; /* Fallback */
+            height: 100dvh; /* Dynamic Viewport Height */
+        }
+
+        /* --- BIZTONSÁGOS ZÓNA OSZTÁLY --- */
+        /* Ez biztosítja, hogy a tartalom ne lógjon a notch-ba vagy a home csík alá */
+        .safe-area-container {
+            padding-top: var(--sat);
+            padding-bottom: var(--sab);
+            padding-left: var(--sal);
+            padding-right: var(--sar);
         }
         
         h1, .score-display, .font-digit, .keypad-btn, .modifier-btn {
@@ -87,7 +104,7 @@
         #dartboard-svg {
             width: 100%;
             height: 100%;
-            max-height: 40vh; /* Nagyobb méret */
+            max-height: 40vh;
             filter: drop-shadow(0 0 5px rgba(0,0,0,0.5));
             touch-action: none;
         }
@@ -123,15 +140,14 @@
             font-size: 16px !important;
         }
         
-        /* PWA telepítés gomb stílus (opcionális, ha később kellene) */
         #pwa-install-prompt {
             display: none;
         }
     </style>
 </head>
-<body class="text-white flex flex-col w-full max-w-lg mx-auto bg-black h-screen">
+<body class="text-white flex flex-col w-full max-w-lg mx-auto bg-black safe-area-container">
 
-    <div id="setup-screen" class="flex flex-col h-full p-4 relative overflow-hidden">
+    <div id="setup-screen" class="flex flex-col h-full w-full p-4 relative overflow-hidden">
         <div class="absolute top-0 left-0 w-full h-full -z-10 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900 via-gray-900 to-black"></div>
 
         <div class="flex-shrink-0 text-center mb-4 mt-2">
@@ -140,7 +156,7 @@
             </h1>
         </div>
         
-        <div class="flex-1 glass-panel p-4 rounded-xl flex flex-col overflow-hidden border border-white/10 w-full">
+        <div class="flex-1 glass-panel p-4 rounded-xl flex flex-col overflow-hidden border border-white/10 w-full mb-2">
             
             <div class="flex justify-between items-center mb-3 flex-shrink-0">
                 <label class="text-gray-300 text-xs font-bold uppercase tracking-wider">Játékosok</label>
@@ -155,7 +171,7 @@
             </div>
             
             <div id="setup-player-list" class="space-y-2 overflow-y-auto flex-1 mb-4 pr-1">
-                </div>
+            </div>
 
             <div class="space-y-3 pt-3 border-t border-gray-700/50 flex-shrink-0">
                 <div class="grid grid-cols-2 gap-3">
@@ -213,7 +229,7 @@
         </div>
 
         <div id="players-container" class="flex-1 grid grid-cols-2 gap-2 p-2 overflow-y-auto content-start">
-            </div>
+        </div>
 
         <div class="bg-black/80 backdrop-blur py-2 px-4 border-t border-white/10 flex justify-between items-center h-16 flex-shrink-0 z-20">
             <div class="flex gap-2 items-center">
@@ -227,7 +243,7 @@
             </div>
         </div>
 
-        <div class="bg-slate-900 border-t border-gray-800 p-2 flex-shrink-0 z-30 pb-8">
+        <div class="bg-slate-900 border-t border-gray-800 p-2 flex-shrink-0 z-30">
             
             <div class="flex justify-center mb-2">
                 <div class="bg-gray-800 p-1 rounded-lg flex w-full max-w-xs">
@@ -250,7 +266,7 @@
                         }
                     </script>
                 </div>
-                 
+                  
                 <div class="flex gap-2 h-12">
                     <button onclick="handleThrow(25)" class="flex-1 bg-red-900/40 text-red-200 border border-red-900 rounded font-bold text-sm active:bg-red-900">BULL</button>
                     <button onclick="handleThrow(0)" class="flex-1 bg-gray-700 text-gray-300 rounded font-bold text-sm active:bg-gray-600">MISS</button>
@@ -262,7 +278,7 @@
 
             <div id="board-mode-container" class="hidden flex flex-col h-full">
                 <div id="dartboard-wrapper" class="w-full flex justify-center items-center flex-1 min-h-0 mb-2">
-                    </div>
+                </div>
                 <div class="flex gap-2 h-12">
                     <button onclick="undoThrow()" class="w-14 bg-slate-700 rounded text-white text-lg flex items-center justify-center active:scale-95">⌫</button>
                      <button onclick="handleThrow(0)" class="w-16 bg-gray-700 text-gray-300 rounded font-bold text-xs active:bg-gray-600">MISS</button>
@@ -321,7 +337,10 @@
             const container = document.getElementById('setup-player-list');
             const div = document.createElement('div');
             div.className = "flex gap-2 items-center animate-fade-in";
-            div.innerHTML = `<br>                <input type="text" class="player-name-input flex-1 p-3 bg-slate-800 rounded border border-gray-600 text-white" value="${name}" placeholder="Név"><br>                ${setupPlayerCount > 2 ? `<button onclick="removePlayerInput(this)" class="w-10 h-full text-red-400 font-bold p-2 text-xl">×</button>` : ''}<br>            `;
+            div.innerHTML = `
+                <input type="text" class="player-name-input flex-1 p-3 bg-slate-800 rounded border border-gray-600 text-white" value="${name}" placeholder="Név">
+                ${setupPlayerCount > 2 ? `<button onclick="removePlayerInput(this)" class="w-10 h-full text-red-400 font-bold p-2 text-xl">×</button>` : ''}
+            `;
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
@@ -446,7 +465,15 @@
                 card.id = `player-card-${index}`;
                 // Kisebb, kompaktabb kártyák mobilon
                 card.className = `glass-panel rounded-xl p-2 flex flex-col items-center justify-center relative transition-all duration-300 min-h-[110px] inactive-player`;
-                card.innerHTML = `<br>                    <div class="text-gray-300 text-xs font-bold uppercase tracking-wider mb-1 truncate w-full text-center">${player.name}</div><br>                    <div class="text-4xl sm:text-5xl font-bold text-white tracking-tighter score-display neon-text">${player.score}</div><br>                    <div id="checkout-container-${index}" class="min-h-[20px] w-full text-center"></div><br>                    <div class="mt-auto w-full flex justify-between items-center text-[10px] text-gray-400 bg-slate-900/50 px-2 py-1 rounded border border-white/5"><br>                        <span>Legs: <span id="legs-${index}" class="text-white">0</span></span><br>                        <span>Avg: <span id="avg-${index}" class="text-white">0.0</span></span><br>                    </div><br>                `;
+                card.innerHTML = `
+                    <div class="text-gray-300 text-xs font-bold uppercase tracking-wider mb-1 truncate w-full text-center">${player.name}</div>
+                    <div class="text-4xl sm:text-5xl font-bold text-white tracking-tighter score-display neon-text">${player.score}</div>
+                    <div id="checkout-container-${index}" class="min-h-[20px] w-full text-center"></div>
+                    <div class="mt-auto w-full flex justify-between items-center text-[10px] text-gray-400 bg-slate-900/50 px-2 py-1 rounded border border-white/5">
+                        <span>Legs: <span id="legs-${index}" class="text-white">0</span></span>
+                        <span>Avg: <span id="avg-${index}" class="text-white">0.0</span></span>
+                    </div>
+                `;
                 container.appendChild(card);
             });
         }
