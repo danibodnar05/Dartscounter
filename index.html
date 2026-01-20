@@ -2,10 +2,8 @@
 <html lang="hu" class="overscroll-none">
 <head>
     <meta charset="UTF-8">
-    <!-- Fontos: viewport és PWA beállítások -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     
-    <!-- PWA: App-szerű viselkedés beállításai -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Darts Pro">
@@ -13,12 +11,9 @@
     
     <title>Darts Számláló Pro</title>
     
-    <!-- Ikon beállítása (Beágyazott SVG) -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
-
-    <!-- Beágyazott Manifest JSON (Hogy telepíthető legyen fájlgenerálás nélkül) -->
-    <link rel="manifest" href='data:application/manifest+json;base64,ewogICJuYW1lIjogIkRhcnRzIFN6w6FtbMOhbMOzIFBybyIsCiAgInNob3J0X25hbWUiOiAiRGFydHMgUHJvIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMwZjE3MmEiLAogICJ0aGVtZV9jb2xvciI6ICIjMGYxNzJhIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiZGF0YTppbWFnZS9zdmcreG1sLDxzdmcgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB2aWV3Qm94PScwIDAgMTAwIDEwMCc+PHRleHQgeT0nLjllbScgZm9udC1zaXplPSc5MCc+8J+OrzwvdGV4dD48L3N2Zz4iLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9'>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="apple-touch-icon" href="icon.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -136,9 +131,7 @@
 </head>
 <body class="text-white flex flex-col w-full max-w-lg mx-auto bg-black h-screen">
 
-    <!-- 1. BEÁLLÍTÁSOK KÉPERNYŐ -->
     <div id="setup-screen" class="flex flex-col h-full p-4 relative overflow-hidden">
-        <!-- Háttér -->
         <div class="absolute top-0 left-0 w-full h-full -z-10 opacity-30 pointer-events-none bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900 via-gray-900 to-black"></div>
 
         <div class="flex-shrink-0 text-center mb-4 mt-2">
@@ -162,10 +155,8 @@
             </div>
             
             <div id="setup-player-list" class="space-y-2 overflow-y-auto flex-1 mb-4 pr-1">
-                <!-- Inputs -->
-            </div>
+                </div>
 
-            <!-- Alsó beállítások -->
             <div class="space-y-3 pt-3 border-t border-gray-700/50 flex-shrink-0">
                 <div class="grid grid-cols-2 gap-3">
                     <div>
@@ -204,10 +195,8 @@
         </div>
     </div>
 
-    <!-- 2. JÁTÉK KÉPERNYŐ -->
     <div id="game-screen" class="hidden flex-col h-full w-full relative bg-slate-900">
         
-        <!-- Felső sáv (Kompakt) -->
         <div class="px-3 py-2 flex justify-between items-center glass-panel z-50 flex-shrink-0 h-14">
             <button onclick="resetSetup()" class="text-gray-400 p-2 rounded-full hover:bg-white/10 active:scale-90 transition">
                 <span class="text-xl font-bold">❮</span>
@@ -223,12 +212,9 @@
             </button>
         </div>
 
-        <!-- Játékos lista (Görgethető, rugalmas) -->
         <div id="players-container" class="flex-1 grid grid-cols-2 gap-2 p-2 overflow-y-auto content-start">
-            <!-- JS tölti fel -->
-        </div>
+            </div>
 
-        <!-- Info Sáv (Kör + Total) -->
         <div class="bg-black/80 backdrop-blur py-2 px-4 border-t border-white/10 flex justify-between items-center h-16 flex-shrink-0 z-20">
             <div class="flex gap-2 items-center">
                 <div id="dart-1" class="w-10 h-10 bg-gray-800 rounded border border-gray-600 flex items-center justify-center text-sm font-digit text-gray-400"></div>
@@ -241,10 +227,8 @@
             </div>
         </div>
 
-        <!-- Vezérlőpult (Fix alul + Extra Padding) -->
         <div class="bg-slate-900 border-t border-gray-800 p-2 flex-shrink-0 z-30 pb-8">
             
-            <!-- Váltó -->
             <div class="flex justify-center mb-2">
                 <div class="bg-gray-800 p-1 rounded-lg flex w-full max-w-xs">
                     <button onclick="switchInputMode('keypad')" id="toggle-keypad" class="input-toggle-btn active flex-1 py-1 text-xs font-bold uppercase rounded-md">123</button>
@@ -252,7 +236,6 @@
                 </div>
             </div>
 
-            <!-- KEYPAD MODE -->
             <div id="keypad-mode-container" class="flex flex-col gap-2">
                 <div class="flex gap-2 h-10">
                     <button onclick="toggleModifier('double')" id="btn-double" class="modifier-btn flex-1 rounded text-red-400 font-bold text-sm active:scale-95">DOUBLE</button>
@@ -277,12 +260,9 @@
                 </div>
             </div>
 
-            <!-- BOARD MODE -->
             <div id="board-mode-container" class="hidden flex flex-col h-full">
-                <!-- A tábla kitölti a rendelkezésre álló helyet, de max 40vh -->
                 <div id="dartboard-wrapper" class="w-full flex justify-center items-center flex-1 min-h-0 mb-2">
-                    <!-- SVG injected here -->
-                </div>
+                    </div>
                 <div class="flex gap-2 h-12">
                     <button onclick="undoThrow()" class="w-14 bg-slate-700 rounded text-white text-lg flex items-center justify-center active:scale-95">⌫</button>
                      <button onclick="handleThrow(0)" class="w-16 bg-gray-700 text-gray-300 rounded font-bold text-xs active:bg-gray-600">MISS</button>
@@ -294,7 +274,6 @@
         </div>
     </div>
 
-    <!-- GYŐZTES MODAL -->
     <div id="winner-modal" class="hidden fixed inset-0 bg-black/95 backdrop-blur-sm flex items-center justify-center z-[100] px-4">
         <div class="bg-slate-900 p-6 rounded-2xl text-center w-full max-w-sm border border-green-500/30 shadow-2xl">
             <div class="text-6xl mb-4 animate-bounce">🏆</div>
@@ -342,10 +321,7 @@
             const container = document.getElementById('setup-player-list');
             const div = document.createElement('div');
             div.className = "flex gap-2 items-center animate-fade-in";
-            div.innerHTML = `
-                <input type="text" class="player-name-input flex-1 p-3 bg-slate-800 rounded border border-gray-600 text-white" value="${name}" placeholder="Név">
-                ${setupPlayerCount > 2 ? `<button onclick="removePlayerInput(this)" class="w-10 h-full text-red-400 font-bold p-2 text-xl">×</button>` : ''}
-            `;
+            div.innerHTML = `<br>                <input type="text" class="player-name-input flex-1 p-3 bg-slate-800 rounded border border-gray-600 text-white" value="${name}" placeholder="Név"><br>                ${setupPlayerCount > 2 ? `<button onclick="removePlayerInput(this)" class="w-10 h-full text-red-400 font-bold p-2 text-xl">×</button>` : ''}<br>            `;
             container.appendChild(div);
             container.scrollTop = container.scrollHeight;
         }
@@ -470,15 +446,7 @@
                 card.id = `player-card-${index}`;
                 // Kisebb, kompaktabb kártyák mobilon
                 card.className = `glass-panel rounded-xl p-2 flex flex-col items-center justify-center relative transition-all duration-300 min-h-[110px] inactive-player`;
-                card.innerHTML = `
-                    <div class="text-gray-300 text-xs font-bold uppercase tracking-wider mb-1 truncate w-full text-center">${player.name}</div>
-                    <div class="text-4xl sm:text-5xl font-bold text-white tracking-tighter score-display neon-text">${player.score}</div>
-                    <div id="checkout-container-${index}" class="min-h-[20px] w-full text-center"></div>
-                    <div class="mt-auto w-full flex justify-between items-center text-[10px] text-gray-400 bg-slate-900/50 px-2 py-1 rounded border border-white/5">
-                        <span>Legs: <span id="legs-${index}" class="text-white">0</span></span>
-                        <span>Avg: <span id="avg-${index}" class="text-white">0.0</span></span>
-                    </div>
-                `;
+                card.innerHTML = `<br>                    <div class="text-gray-300 text-xs font-bold uppercase tracking-wider mb-1 truncate w-full text-center">${player.name}</div><br>                    <div class="text-4xl sm:text-5xl font-bold text-white tracking-tighter score-display neon-text">${player.score}</div><br>                    <div id="checkout-container-${index}" class="min-h-[20px] w-full text-center"></div><br>                    <div class="mt-auto w-full flex justify-between items-center text-[10px] text-gray-400 bg-slate-900/50 px-2 py-1 rounded border border-white/5"><br>                        <span>Legs: <span id="legs-${index}" class="text-white">0</span></span><br>                        <span>Avg: <span id="avg-${index}" class="text-white">0.0</span></span><br>                    </div><br>                `;
                 container.appendChild(card);
             });
         }
